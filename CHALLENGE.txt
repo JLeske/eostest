@@ -1,0 +1,83 @@
+# EOS CoA Frontend Coding Challenge
+
+This coding challenge serves us to get a better understanding of your software development approach. 
+You should develop this project as you would do it on your regular day job. If you need to take any shortcuts, eg because of time constraints, please document them. 
+The scope of this challenge is about half a day of development time and we hope our estimate isn't too far off.
+
+## Software Build Result Visualizer
+
+The software build result visualizer manages a list of software projects, listens on their build results from an external build system and displays the build results, similar to a build server, like Jenkins.
+
+A software project consists of a project name and a Git URI for its source code.
+A software project is being built by an external build system that produces a build result status of either success or failure and a build log per build.
+
+### Features
+
+The frontend allows users to
+
+* create projects
+* list projects, including their current build status
+* view all past build results per project
+
+
+The backend
+
+* receives build results from `stdin` in form of JSON lines containing objects following the schema described in the appendix of this document and uses them to update the build history of the projects that have been created in the frontend
+* produces project creation events on `stdout` also in form of JSON lines in a schema you can decide on yourself
+
+### Technologies
+
+Please use the following technologies for the frontend:
+
+* AngularJS / Material Design (nice to have, depending on your time)
+
+And for the backend:
+
+* Node.js
+
+### Appendix
+
+#### Build Result JSON Schema
+
+```json
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "BuildResult",
+    "type": "object",
+    "properties": {
+        "projectName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "buildResult": {
+            "type": "string",
+            "enum": ["success", "failure"]
+        },
+        "buildLog": {
+            "type": "string"
+        }
+    },
+    "required": ["projectName", "buildResult", "buildLog"]
+}
+```
+
+start project:
+npm install
+node server.js
+ng serve
+
+There is no error handling.
+There is no validation.
+There are no comments.
+
+I generated the basic code from the cli.
+For the form I checked https://angular.io/guide/forms and took some code from there.
+
+What is going on:
+You enter a title and a uri and click on "Do create".
+In ProjectBuilderService a fake build process is started. Actually all it is:
+A "Build"-object is generated and the build state is either "success" or "failure"
+(in case the project title is shorter than 3 chars).
+The "Build"-object is passed to a backend api. There it gets saved in an array. (No real persistence.)
+This array gets queried to update the build list on the front page.
+I think it does not exactly what was asked for, but it was enough for me to see if I am comfortable with the stuff.

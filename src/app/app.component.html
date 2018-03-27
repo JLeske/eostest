@@ -1,0 +1,16 @@
+<div class="main-content">
+    <h1>
+        {{title}}
+    </h1>
+    <app-project-form (newProjectEvent)="newProject($event)"></app-project-form>
+    <h2>Builds</h2>
+    <ul class="build-list">
+        <li *ngFor="let build of builds" class="build-list-element">
+            <ul>
+                <li>TITLE: {{build.projectName}}</li>
+                <li>STATE: {{build.buildResult}}</li>
+                <li>LOG: {{build.buildLog}}</li>
+            </ul>
+        </li>
+    </ul>
+</div>
